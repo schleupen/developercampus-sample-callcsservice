@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:msb="http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:http="http://schemas.microsoft.com/ws/06/2004/policy/http" xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy" xmlns:cs="urn://Schleupen.CS.PI.SB.Wsdl_3.0" xmlns:sb="urn://Schleupen.CS.PI.SB.Broker_3.2" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:sawsdl="http://www.w3.org/ns/sawsdl" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:tns="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:kdf="urn://Schleupen.CS.kdf_3.1" xmlns:msf="http://schemas.microsoft.com/ws/2006/05/framing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" targetNamespace="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="tcp_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <msb:BinaryEncoding />
+        <sp:TransportBinding>
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <msf:WindowsTransportSecurity>
+                  <msf:ProtectionLevel>EncryptAndSign</msf:ProtectionLevel>
+                </msf:WindowsTransportSecurity>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="http_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <http:NegotiateAuthentication />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified" targetNamespace="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5" version="3.5.8.0">
+      <xsd:import namespace="urn://Schleupen.CS.kdf_3.1" />
+      <xsd:simpleType name="RelatedSessionTokenCreationContract">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration cs:type="kdf:RelatedSessionTokenCreation_None" value="None" />
+          <xsd:enumeration cs:type="kdf:RelatedSessionTokenCreation_Upwards" value="Upwards" />
+          <xsd:enumeration cs:type="kdf:RelatedSessionTokenCreation_Downwards" value="Downwards" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="ArrayOfImplementationId">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ImplementationId" nillable="true" type="kdf:ServiceImplementation_ImplementationId" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfSessionToken">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="SessionToken" nillable="true" type="kdf:Session_SessionToken" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfSessionTokensOfServiceImplementationContract">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="SessionTokensOfServiceImplementationContract" nillable="true" type="tns:SessionTokensOfServiceImplementationContract" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ByIdElementLegacyQualificationContract">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="tns:ElementQualificationContract">
+            <xsd:sequence>
+              <xsd:element minOccurs="1" maxOccurs="1" name="ElementName" type="kdf:SystemStructureElement_Name" />
+              <xsd:element minOccurs="1" maxOccurs="1" name="ElementTypeId" type="kdf:SystemStructureElementType_Id" />
+              <xsd:element minOccurs="1" maxOccurs="1" name="ViewId" type="kdf:SystemStructureView_Id" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="CreateByServiceImplementationGroupRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="ServiceImplementationGroupName" nillable="true" type="kdf:ServiceImplementationGroup_Name" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CreateByServiceImplementationGroupResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="SessionTokens" nillable="true" type="tns:ArrayOfSessionToken" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CreateByServiceImplementationRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="ServiceImplementationIds" nillable="true" type="tns:ArrayOfImplementationId" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="SessionToken" nillable="true" type="kdf:Session_SessionToken" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CreateByServiceImplementationResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="SessionTokensOfServiceImplementationListe" nillable="true" type="tns:ArrayOfSessionTokensOfServiceImplementationContract" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CreateLeafSessionTokensRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="SessionToken" nillable="true" type="kdf:Session_SessionToken" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CreateLeafSessionTokensResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="SessionTokens" nillable="true" type="tns:ArrayOfSessionToken" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CreateSystemRequest">
+        <xsd:sequence />
+      </xsd:complexType>
+      <xsd:complexType name="CreateSystemResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="SessionToken" nillable="true" type="kdf:Session_SessionToken" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ElementByIdQualificationContract">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="tns:ElementQualificationContract">
+            <xsd:sequence>
+              <xsd:element minOccurs="1" maxOccurs="1" name="ElementId" type="kdf:SystemStructureElement_Id" />
+              <xsd:element minOccurs="1" maxOccurs="1" name="ViewId" type="kdf:SystemStructureView_Id" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ElementByNameQualificationContract">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="tns:ElementQualificationContract">
+            <xsd:sequence>
+              <xsd:element minOccurs="1" maxOccurs="1" name="ElementName" type="kdf:SystemStructureElement_Name" />
+              <xsd:element minOccurs="1" maxOccurs="1" name="ElementTypeName" type="kdf:SystemStructureElement_Name" />
+              <xsd:element minOccurs="1" maxOccurs="1" name="ViewName" type="kdf:SystemStructureView_Name" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ElementNotFoundFaultContract">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="Name" nillable="true" type="kdf:SystemStructureElement_Name" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="TypeId" nillable="true" type="kdf:SystemStructureElementType_Id" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="ViewId" nillable="true" type="kdf:SystemStructureView_Id" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ElementQualificationContract">
+        <xsd:sequence />
+      </xsd:complexType>
+      <xsd:complexType name="ExecuteRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="CheckCs20Authorization" nillable="true" type="xsd:boolean" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="ElementQualification" nillable="true" type="tns:ElementQualificationContract" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SessionTokenQualification" nillable="true" type="tns:SessionTokenQualificationContract" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SystemUsageQualification" nillable="true" type="tns:SystemUsageQualificationContract" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ExecuteResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="RelatedSessionTokens" nillable="true" type="tns:ArrayOfSessionToken" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="SessionToken" nillable="true" type="kdf:Session_SessionToken" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="SessionTokenQualificationContract">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="DerivedFrom" nillable="true" type="kdf:Session_SessionToken" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="IncludeMainSessionToken" nillable="true" type="xsd:boolean" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="RelatedSessionTokenCreation" nillable="true" type="tns:RelatedSessionTokenCreationContract" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="ServiceImplementationGroupName" nillable="true" type="kdf:ServiceImplementationGroup_Name" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="SessionTokensOfServiceImplementationContract">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="ServiceImplementationId" type="kdf:ServiceImplementation_ImplementationId" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="SessionTokens" nillable="true" type="tns:ArrayOfSessionToken" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="SystemUsageByIdQualificationContract">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="tns:SystemUsageQualificationContract">
+            <xsd:sequence>
+              <xsd:element minOccurs="1" maxOccurs="1" name="Id" type="kdf:SystemUsage_Id" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="SystemUsageByNameQualificationContract">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="tns:SystemUsageQualificationContract">
+            <xsd:sequence>
+              <xsd:element minOccurs="1" maxOccurs="1" name="Name" type="kdf:SystemUsage_Name" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="SystemUsageNotFoundFaultContract">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="Id" nillable="true" type="kdf:SystemUsage_Id" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="Name" nillable="true" type="kdf:SystemUsage_Name" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="SystemUsageQualificationContract">
+        <xsd:sequence />
+      </xsd:complexType>
+      <xsd:complexType name="UnhandledFaultContract">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="Id" nillable="true" type="kdf:UnhandledFault_Id" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ViewNotFoundFaultContract">
+        <xsd:sequence />
+      </xsd:complexType>
+      <xsd:element name="ArrayOfImplementationId" type="tns:ArrayOfImplementationId" />
+      <xsd:element name="ArrayOfSessionToken" type="tns:ArrayOfSessionToken" />
+      <xsd:element name="ArrayOfSessionTokensOfServiceImplementationContract" type="tns:ArrayOfSessionTokensOfServiceImplementationContract" />
+      <xsd:element name="ByIdElementLegacyQualificationContract" type="tns:ByIdElementLegacyQualificationContract" />
+      <xsd:element name="CreateByServiceImplementationGroupRequest" type="tns:CreateByServiceImplementationGroupRequest" />
+      <xsd:element name="CreateByServiceImplementationGroupResponse" type="tns:CreateByServiceImplementationGroupResponse" />
+      <xsd:element name="CreateByServiceImplementationRequest" type="tns:CreateByServiceImplementationRequest" />
+      <xsd:element name="CreateByServiceImplementationResponse" type="tns:CreateByServiceImplementationResponse" />
+      <xsd:element name="CreateLeafSessionTokensRequest" type="tns:CreateLeafSessionTokensRequest" />
+      <xsd:element name="CreateLeafSessionTokensResponse" type="tns:CreateLeafSessionTokensResponse" />
+      <xsd:element name="CreateSystemRequest" type="tns:CreateSystemRequest" />
+      <xsd:element name="CreateSystemResponse" type="tns:CreateSystemResponse" />
+      <xsd:element name="ElementByIdQualificationContract" type="tns:ElementByIdQualificationContract" />
+      <xsd:element name="ElementByNameQualificationContract" type="tns:ElementByNameQualificationContract" />
+      <xsd:element name="ElementNotFoundFaultContract" type="tns:ElementNotFoundFaultContract" />
+      <xsd:element name="ElementQualificationContract" type="tns:ElementQualificationContract" />
+      <xsd:element name="ExecuteRequest" type="tns:ExecuteRequest" />
+      <xsd:element name="ExecuteResponse" type="tns:ExecuteResponse" />
+      <xsd:element name="SessionTokenQualificationContract" type="tns:SessionTokenQualificationContract" />
+      <xsd:element name="SessionTokensOfServiceImplementationContract" type="tns:SessionTokensOfServiceImplementationContract" />
+      <xsd:element name="SystemUsageByIdQualificationContract" type="tns:SystemUsageByIdQualificationContract" />
+      <xsd:element name="SystemUsageByNameQualificationContract" type="tns:SystemUsageByNameQualificationContract" />
+      <xsd:element name="SystemUsageNotFoundFaultContract" type="tns:SystemUsageNotFoundFaultContract" />
+      <xsd:element name="SystemUsageQualificationContract" type="tns:SystemUsageQualificationContract" />
+      <xsd:element name="UnhandledFaultContract" type="tns:UnhandledFaultContract" />
+      <xsd:element name="ViewNotFoundFaultContract" type="tns:ViewNotFoundFaultContract" />
+    </xsd:schema>
+    <xsd:schema targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/">
+      <xsd:simpleType name="guid">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:schema>
+    <xsd:schema targetNamespace="urn://Schleupen.CS.kdf_3.1" version="3.1.0.0">
+      <xsd:simpleType name="RelatedSessionTokenCreation_Downwards">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Downwards" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="RelatedSessionTokenCreation_None">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="None" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="RelatedSessionTokenCreation_Upwards">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Upwards" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ServiceImplementation_ImplementationId">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="ServiceImplementationGroup_Name">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="Session_SessionToken">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="SystemStructureElement_Id">
+        <xsd:restriction base="ser:guid" />
+      </xsd:simpleType>
+      <xsd:simpleType name="SystemStructureElement_Name">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="SystemStructureElementType_Id">
+        <xsd:restriction base="ser:guid" />
+      </xsd:simpleType>
+      <xsd:simpleType name="SystemStructureView_Id">
+        <xsd:restriction base="ser:guid" />
+      </xsd:simpleType>
+      <xsd:simpleType name="SystemStructureView_Name">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="SystemUsage_Id">
+        <xsd:restriction base="ser:guid" />
+      </xsd:simpleType>
+      <xsd:simpleType name="SystemUsage_Name">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="UnhandledFault_Id">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="CreateByServiceImplementationGroupRequest">
+    <wsdl:part name="parameters" element="tns:CreateByServiceImplementationGroupRequest" />
+  </wsdl:message>
+  <wsdl:message name="CreateByServiceImplementationGroupResponse">
+    <wsdl:part name="parameters" element="tns:CreateByServiceImplementationGroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateByServiceImplementationRequest">
+    <wsdl:part name="parameters" element="tns:CreateByServiceImplementationRequest" />
+  </wsdl:message>
+  <wsdl:message name="CreateByServiceImplementationResponse">
+    <wsdl:part name="parameters" element="tns:CreateByServiceImplementationResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateLeafSessionTokensRequest">
+    <wsdl:part name="parameters" element="tns:CreateLeafSessionTokensRequest" />
+  </wsdl:message>
+  <wsdl:message name="CreateLeafSessionTokensResponse">
+    <wsdl:part name="parameters" element="tns:CreateLeafSessionTokensResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateSystemRequest">
+    <wsdl:part name="parameters" element="tns:CreateSystemRequest" />
+  </wsdl:message>
+  <wsdl:message name="CreateSystemResponse">
+    <wsdl:part name="parameters" element="tns:CreateSystemResponse" />
+  </wsdl:message>
+  <wsdl:message name="ExecuteRequest">
+    <wsdl:part name="parameters" element="tns:ExecuteRequest" />
+  </wsdl:message>
+  <wsdl:message name="ExecuteResponse">
+    <wsdl:part name="parameters" element="tns:ExecuteResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICreateSessionTokenActivityService_CreateByServiceImplementation_ElementNotFoundFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ElementNotFoundFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="ICreateSessionTokenActivityService_CreateByServiceImplementation_SystemUsageNotFoundFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:SystemUsageNotFoundFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="ICreateSessionTokenActivityService_CreateByServiceImplementation_UnhandledFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:UnhandledFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="ICreateSessionTokenActivityService_CreateByServiceImplementation_ViewNotFoundFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ViewNotFoundFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="ICreateSessionTokenActivityService_CreateByServiceImplementationGroup_UnhandledFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:UnhandledFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="ICreateSessionTokenActivityService_CreateLeafSessionTokens_ElementNotFoundFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ElementNotFoundFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="ICreateSessionTokenActivityService_CreateLeafSessionTokens_SystemUsageNotFoundFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:SystemUsageNotFoundFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="ICreateSessionTokenActivityService_CreateLeafSessionTokens_UnhandledFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:UnhandledFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="ICreateSessionTokenActivityService_CreateLeafSessionTokens_ViewNotFoundFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ViewNotFoundFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="ICreateSessionTokenActivityService_CreateSystem_UnhandledFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:UnhandledFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="ICreateSessionTokenActivityService_Execute_ElementNotFoundFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ElementNotFoundFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="ICreateSessionTokenActivityService_Execute_SystemUsageNotFoundFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:SystemUsageNotFoundFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="ICreateSessionTokenActivityService_Execute_UnhandledFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:UnhandledFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="ICreateSessionTokenActivityService_Execute_ViewNotFoundFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ViewNotFoundFaultContract" />
+  </wsdl:message>
+  <wsdl:portType name="ICreateSessionTokenActivityService">
+    <wsdl:operation name="Execute">
+      <wsdl:input wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/Execute" name="ExecuteRequest" message="tns:ExecuteRequest" />
+      <wsdl:output wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/ExecuteResponse" name="ExecuteResponse" message="tns:ExecuteResponse" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/ExecuteElementNotFoundFaultContractFault" name="ElementNotFoundFaultContractFault" message="tns:ICreateSessionTokenActivityService_Execute_ElementNotFoundFaultContractFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/ExecuteSystemUsageNotFoundFaultContractFault" name="SystemUsageNotFoundFaultContractFault" message="tns:ICreateSessionTokenActivityService_Execute_SystemUsageNotFoundFaultContractFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/ExecuteViewNotFoundFaultContractFault" name="ViewNotFoundFaultContractFault" message="tns:ICreateSessionTokenActivityService_Execute_ViewNotFoundFaultContractFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/ExecuteUnhandledFaultContractFault" name="UnhandledFaultContractFault" message="tns:ICreateSessionTokenActivityService_Execute_UnhandledFaultContractFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateSystem">
+      <wsdl:input wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateSystem" name="CreateSystemRequest" message="tns:CreateSystemRequest" />
+      <wsdl:output wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateSystemResponse" name="CreateSystemResponse" message="tns:CreateSystemResponse" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateSystemUnhandledFaultContractFault" name="UnhandledFaultContractFault" message="tns:ICreateSessionTokenActivityService_CreateSystem_UnhandledFaultContractFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateByServiceImplementation">
+      <wsdl:input wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateByServiceImplementation" name="CreateByServiceImplementationRequest" message="tns:CreateByServiceImplementationRequest" />
+      <wsdl:output wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateByServiceImplementationResponse" name="CreateByServiceImplementationResponse" message="tns:CreateByServiceImplementationResponse" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateByServiceImplementationElementNotFoundFaultContractFault" name="ElementNotFoundFaultContractFault" message="tns:ICreateSessionTokenActivityService_CreateByServiceImplementation_ElementNotFoundFaultContractFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateByServiceImplementationSystemUsageNotFoundFaultContractFault" name="SystemUsageNotFoundFaultContractFault" message="tns:ICreateSessionTokenActivityService_CreateByServiceImplementation_SystemUsageNotFoundFaultContractFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateByServiceImplementationViewNotFoundFaultContractFault" name="ViewNotFoundFaultContractFault" message="tns:ICreateSessionTokenActivityService_CreateByServiceImplementation_ViewNotFoundFaultContractFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateByServiceImplementationUnhandledFaultContractFault" name="UnhandledFaultContractFault" message="tns:ICreateSessionTokenActivityService_CreateByServiceImplementation_UnhandledFaultContractFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateLeafSessionTokens">
+      <wsdl:input wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateLeafSessionTokens" name="CreateLeafSessionTokensRequest" message="tns:CreateLeafSessionTokensRequest" />
+      <wsdl:output wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateLeafSessionTokensResponse" name="CreateLeafSessionTokensResponse" message="tns:CreateLeafSessionTokensResponse" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateLeafSessionTokensElementNotFoundFaultContractFault" name="ElementNotFoundFaultContractFault" message="tns:ICreateSessionTokenActivityService_CreateLeafSessionTokens_ElementNotFoundFaultContractFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateLeafSessionTokensSystemUsageNotFoundFaultContractFault" name="SystemUsageNotFoundFaultContractFault" message="tns:ICreateSessionTokenActivityService_CreateLeafSessionTokens_SystemUsageNotFoundFaultContractFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateLeafSessionTokensViewNotFoundFaultContractFault" name="ViewNotFoundFaultContractFault" message="tns:ICreateSessionTokenActivityService_CreateLeafSessionTokens_ViewNotFoundFaultContractFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateLeafSessionTokensUnhandledFaultContractFault" name="UnhandledFaultContractFault" message="tns:ICreateSessionTokenActivityService_CreateLeafSessionTokens_UnhandledFaultContractFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateByServiceImplementationGroup">
+      <wsdl:input wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateByServiceImplementationGroup" name="CreateByServiceImplementationGroupRequest" message="tns:CreateByServiceImplementationGroupRequest" />
+      <wsdl:output wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateByServiceImplementationGroupResponse" name="CreateByServiceImplementationGroupResponse" message="tns:CreateByServiceImplementationGroupResponse" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateByServiceImplementationGroupUnhandledFaultContractFault" name="UnhandledFaultContractFault" message="tns:ICreateSessionTokenActivityService_CreateByServiceImplementationGroup_UnhandledFaultContractFault_FaultMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="http" type="tns:ICreateSessionTokenActivityService">
+    <wsp:PolicyReference URI="#http_policy" />
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Execute">
+      <soap:operation soapAction="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/Execute" style="document" />
+      <wsdl:input name="ExecuteRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ExecuteResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ElementNotFoundFaultContractFault">
+        <soap:fault use="literal" name="ElementNotFoundFaultContractFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="SystemUsageNotFoundFaultContractFault">
+        <soap:fault use="literal" name="SystemUsageNotFoundFaultContractFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ViewNotFoundFaultContractFault">
+        <soap:fault use="literal" name="ViewNotFoundFaultContractFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="UnhandledFaultContractFault">
+        <soap:fault use="literal" name="UnhandledFaultContractFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CreateSystem">
+      <soap:operation soapAction="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateSystem" style="document" />
+      <wsdl:input name="CreateSystemRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="CreateSystemResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="UnhandledFaultContractFault">
+        <soap:fault use="literal" name="UnhandledFaultContractFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CreateByServiceImplementation">
+      <soap:operation soapAction="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateByServiceImplementation" style="document" />
+      <wsdl:input name="CreateByServiceImplementationRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="CreateByServiceImplementationResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ElementNotFoundFaultContractFault">
+        <soap:fault use="literal" name="ElementNotFoundFaultContractFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="SystemUsageNotFoundFaultContractFault">
+        <soap:fault use="literal" name="SystemUsageNotFoundFaultContractFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ViewNotFoundFaultContractFault">
+        <soap:fault use="literal" name="ViewNotFoundFaultContractFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="UnhandledFaultContractFault">
+        <soap:fault use="literal" name="UnhandledFaultContractFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CreateLeafSessionTokens">
+      <soap:operation soapAction="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateLeafSessionTokens" style="document" />
+      <wsdl:input name="CreateLeafSessionTokensRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="CreateLeafSessionTokensResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ElementNotFoundFaultContractFault">
+        <soap:fault use="literal" name="ElementNotFoundFaultContractFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="SystemUsageNotFoundFaultContractFault">
+        <soap:fault use="literal" name="SystemUsageNotFoundFaultContractFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ViewNotFoundFaultContractFault">
+        <soap:fault use="literal" name="ViewNotFoundFaultContractFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="UnhandledFaultContractFault">
+        <soap:fault use="literal" name="UnhandledFaultContractFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CreateByServiceImplementationGroup">
+      <soap:operation soapAction="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateByServiceImplementationGroup" style="document" />
+      <wsdl:input name="CreateByServiceImplementationGroupRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="CreateByServiceImplementationGroupResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="UnhandledFaultContractFault">
+        <soap:fault use="literal" name="UnhandledFaultContractFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="tcp" type="tns:ICreateSessionTokenActivityService">
+    <wsp:PolicyReference URI="#tcp_policy" />
+    <soap12:binding transport="http://schemas.microsoft.com/soap/tcp" />
+    <wsdl:operation name="Execute">
+      <soap12:operation soapAction="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/Execute" style="document" />
+      <wsdl:input name="ExecuteRequest">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ExecuteResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ElementNotFoundFaultContractFault">
+        <soap12:fault use="literal" name="ElementNotFoundFaultContractFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="SystemUsageNotFoundFaultContractFault">
+        <soap12:fault use="literal" name="SystemUsageNotFoundFaultContractFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ViewNotFoundFaultContractFault">
+        <soap12:fault use="literal" name="ViewNotFoundFaultContractFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="UnhandledFaultContractFault">
+        <soap12:fault use="literal" name="UnhandledFaultContractFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CreateSystem">
+      <soap12:operation soapAction="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateSystem" style="document" />
+      <wsdl:input name="CreateSystemRequest">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="CreateSystemResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="UnhandledFaultContractFault">
+        <soap12:fault use="literal" name="UnhandledFaultContractFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CreateByServiceImplementation">
+      <soap12:operation soapAction="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateByServiceImplementation" style="document" />
+      <wsdl:input name="CreateByServiceImplementationRequest">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="CreateByServiceImplementationResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ElementNotFoundFaultContractFault">
+        <soap12:fault use="literal" name="ElementNotFoundFaultContractFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="SystemUsageNotFoundFaultContractFault">
+        <soap12:fault use="literal" name="SystemUsageNotFoundFaultContractFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ViewNotFoundFaultContractFault">
+        <soap12:fault use="literal" name="ViewNotFoundFaultContractFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="UnhandledFaultContractFault">
+        <soap12:fault use="literal" name="UnhandledFaultContractFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CreateLeafSessionTokens">
+      <soap12:operation soapAction="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateLeafSessionTokens" style="document" />
+      <wsdl:input name="CreateLeafSessionTokensRequest">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="CreateLeafSessionTokensResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ElementNotFoundFaultContractFault">
+        <soap12:fault use="literal" name="ElementNotFoundFaultContractFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="SystemUsageNotFoundFaultContractFault">
+        <soap12:fault use="literal" name="SystemUsageNotFoundFaultContractFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ViewNotFoundFaultContractFault">
+        <soap12:fault use="literal" name="ViewNotFoundFaultContractFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="UnhandledFaultContractFault">
+        <soap12:fault use="literal" name="UnhandledFaultContractFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CreateByServiceImplementationGroup">
+      <soap12:operation soapAction="urn://Schleupen.CS.PI.SB.Sessions.CreateSessionTokenActivityService_3.5/CreateByServiceImplementationGroup" style="document" />
+      <wsdl:input name="CreateByServiceImplementationGroupRequest">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="CreateByServiceImplementationGroupResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="UnhandledFaultContractFault">
+        <soap12:fault use="literal" name="UnhandledFaultContractFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ICreateSessionTokenActivityService" />
+</wsdl:definitions>

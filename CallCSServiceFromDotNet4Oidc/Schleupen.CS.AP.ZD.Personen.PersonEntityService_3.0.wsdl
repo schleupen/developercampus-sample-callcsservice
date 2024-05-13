@@ -1,0 +1,1087 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Schleupen SE, generiert durch Schleupen.CS.PI.Common.Kamoto, Version: 3.32.1.16, Erstellt am: 24.02.2022 10:19:43-->
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:kdf="urn://Schleupen.CS.kdf_3.1" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:http="http://schemas.microsoft.com/ws/06/2004/policy/http" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:msb="http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:cs="urn://Schleupen.CS.PI.SB.Wsdl_3.0" xmlns:sb="urn://Schleupen.CS.PI.SB.Broker_3.2" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:idem="urn://Schleupen.CS.PI.SB.Idempotency_3.0" xmlns:sawsdl="http://www.w3.org/ns/sawsdl" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:msf="http://schemas.microsoft.com/ws/2006/05/framing/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="tcp_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <msb:BinaryEncoding />
+        <sp:TransportBinding>
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <msf:WindowsTransportSecurity>
+                  <msf:ProtectionLevel>EncryptAndSign</msf:ProtectionLevel>
+                </msf:WindowsTransportSecurity>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="http_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <http:NegotiateAuthentication />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema version="3.0.9.0" elementFormDefault="qualified" targetNamespace="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0">
+      <xsd:import namespace="urn://Schleupen.CS.kdf_3.1" />
+      <xsd:simpleType name="ChronologyGranularityContract">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration cs:type="kdf:ChronologyGranularity_Day" value="Day" />
+          <xsd:enumeration cs:type="kdf:ChronologyGranularity_Hour" value="Hour" />
+          <xsd:enumeration cs:type="kdf:ChronologyGranularity_Minute" value="Minute" />
+          <xsd:enumeration cs:type="kdf:ChronologyGranularity_Month" value="Month" />
+          <xsd:enumeration cs:type="kdf:ChronologyGranularity_None" value="None" />
+          <xsd:enumeration cs:type="kdf:ChronologyGranularity_Second" value="Second" />
+          <xsd:enumeration cs:type="kdf:ChronologyGranularity_Year" value="Year" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ChronologyIntervalTypeContract">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration cs:type="kdf:ChronologyIntervalType_Closed" value="Closed" />
+          <xsd:enumeration cs:type="kdf:ChronologyIntervalType_RightOpen" value="RightOpen" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ChronologyKindContract">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration cs:type="kdf:ChronologyKind_Collection" value="Collection" />
+          <xsd:enumeration cs:type="kdf:ChronologyKind_Ray" value="Ray" />
+          <xsd:enumeration cs:type="kdf:ChronologyKind_Set" value="Set" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="DsgvoZustandContract">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration cs:type="kdf:DsgvoZustand_NichtPseudonymisiert" value="NichtPseudonymisiert" />
+          <xsd:enumeration cs:type="kdf:DsgvoZustand_Pseudonymisiert" value="Pseudonymisiert" />
+          <xsd:enumeration cs:type="kdf:DsgvoZustand_Depseudonymisiert" value="Depseudonymisiert" />
+          <xsd:enumeration cs:type="kdf:DsgvoZustand_Anonymisiert" value="Anonymisiert" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="KontaktwegNutzungContract">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration cs:type="kdf:KontaktwegNutzung_Geschaeftlich" value="Geschaeftlich" />
+          <xsd:enumeration cs:type="kdf:KontaktwegNutzung_Privat" value="Privat" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="KontaktwegTypContract">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration cs:type="kdf:KontaktwegTyp_Rufnummer" value="Rufnummer" />
+          <xsd:enumeration cs:type="kdf:KontaktwegTyp_Girokonto" value="Girokonto" />
+          <xsd:enumeration cs:type="kdf:KontaktwegTyp_EMail" value="EMail" />
+          <xsd:enumeration cs:type="kdf:KontaktwegTyp_Anschrift" value="Anschrift" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="PersonDetailContract">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration cs:type="kdf:PersonDetail_None" value="None" />
+          <xsd:enumeration cs:type="kdf:PersonDetail_PersonIdentitaet" value="PersonIdentitaet" />
+          <xsd:enumeration cs:type="kdf:PersonDetail_PersonIdentitaetAktuell" value="PersonIdentitaetAktuell" />
+          <xsd:enumeration cs:type="kdf:PersonDetail_PersonIdentitaetAktuellUndZukunft" value="PersonIdentitaetAktuellUndZukunft" />
+          <xsd:enumeration cs:type="kdf:PersonDetail_Kontaktwege" value="Kontaktwege" />
+          <xsd:enumeration cs:type="kdf:PersonDetail_Girokonten" value="Girokonten" />
+          <xsd:enumeration cs:type="kdf:PersonDetail_ConfigurableAttributes" value="ConfigurableAttributes" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="RechtsrolleContract">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration cs:type="kdf:Rechtsrolle_Natuerlich" value="Natuerlich" />
+          <xsd:enumeration cs:type="kdf:Rechtsrolle_Juristisch" value="Juristisch" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="RufnummernArtContract">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration cs:type="kdf:RufnummernArt_Festnetz" value="Festnetz" />
+          <xsd:enumeration cs:type="kdf:RufnummernArt_Fax" value="Fax" />
+          <xsd:enumeration cs:type="kdf:RufnummernArt_Mobiltelefon" value="Mobiltelefon" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="SearchModeContract">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration cs:type="kdf:SearchMode_Exact" value="Exact" />
+          <xsd:enumeration cs:type="kdf:SearchMode_BeginsWith" value="BeginsWith" />
+          <xsd:enumeration cs:type="kdf:SearchMode_Wildcard" value="Wildcard" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ValidationMessageLevelContract">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration cs:type="kdf:ValidationMessageLevel_Error" value="Error" />
+          <xsd:enumeration cs:type="kdf:ValidationMessageLevel_Info" value="Info" />
+          <xsd:enumeration cs:type="kdf:ValidationMessageLevel_Warning" value="Warning" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="AnschriftContract">
+        <xsd:complexContent>
+          <xsd:extension base="tns:KontaktwegContract">
+            <xsd:sequence>
+              <xsd:element name="Hausnummer" type="kdf:Anschrift_Hausnummer" minOccurs="0" maxOccurs="1" nillable="true" />
+              <xsd:element name="LandId" type="kdf:Land_Id" minOccurs="1" maxOccurs="1" nillable="false" />
+              <xsd:element name="OptInKennzeichen" type="tns:OptInKennzeichenContract" minOccurs="1" maxOccurs="1" nillable="false" />
+              <xsd:element name="Ort" type="kdf:Anschrift_Ort" minOccurs="1" maxOccurs="1" nillable="false" />
+              <xsd:element name="Ortsteil" type="kdf:Anschrift_Ortsteil" minOccurs="0" maxOccurs="1" nillable="true" />
+              <xsd:element name="Postfach" type="kdf:Anschrift_Postfach" minOccurs="0" maxOccurs="1" nillable="true" />
+              <xsd:element name="Postleitzahl" type="kdf:Anschrift_Postleitzahl" minOccurs="1" maxOccurs="1" nillable="false" />
+              <xsd:element name="Strasse" type="kdf:Anschrift_Strasse" minOccurs="0" maxOccurs="1" nillable="true" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfId">
+        <xsd:sequence>
+          <xsd:element name="Id" type="kdf:Person_Id" minOccurs="0" maxOccurs="unbounded" nillable="false" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfKontaktwegContract">
+        <xsd:sequence>
+          <xsd:element name="KontaktwegContract" type="tns:KontaktwegContract" minOccurs="0" maxOccurs="unbounded" nillable="false" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfPersonContract">
+        <xsd:sequence>
+          <xsd:element name="PersonContract" type="tns:PersonContract" minOccurs="0" maxOccurs="unbounded" nillable="true" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfPersonDetailContract">
+        <xsd:sequence>
+          <xsd:element name="PersonDetailContract" type="tns:PersonDetailContract" minOccurs="0" maxOccurs="unbounded" nillable="false" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfPersonIdentitaetContract">
+        <xsd:sequence>
+          <xsd:element name="PersonIdentitaetContract" type="tns:PersonIdentitaetContract" minOccurs="0" maxOccurs="unbounded" nillable="false" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfPIN">
+        <xsd:sequence>
+          <xsd:element name="PIN" type="kdf:Person_PIN" minOccurs="0" maxOccurs="unbounded" nillable="false" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfValidationMessageContract">
+        <xsd:sequence>
+          <xsd:element name="ValidationMessageContract" type="tns:ValidationMessageContract" minOccurs="0" maxOccurs="unbounded" nillable="false" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfValidationResultContract">
+        <xsd:sequence>
+          <xsd:element name="ValidationResultContract" type="tns:ValidationResultContract" minOccurs="0" maxOccurs="unbounded" nillable="false" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ChronologySettingsContract">
+        <xsd:sequence>
+          <xsd:element name="Granularity" type="tns:ChronologyGranularityContract" minOccurs="1" maxOccurs="1" nillable="false" />
+          <xsd:element name="IntervalType" type="tns:ChronologyIntervalTypeContract" minOccurs="1" maxOccurs="1" nillable="false" />
+          <xsd:element name="Kind" type="tns:ChronologyKindContract" minOccurs="1" maxOccurs="1" nillable="false" />
+          <xsd:element name="PreventClosedTimeboxes" type="xsd:boolean" minOccurs="1" maxOccurs="1" nillable="false" />
+          <xsd:element name="PreventMelting" type="xsd:boolean" minOccurs="1" maxOccurs="1" nillable="false" />
+          <xsd:element name="Termination" type="xsd:dateTime" minOccurs="1" maxOccurs="1" nillable="false" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConfigurableAttributesViewContract">
+        <xsd:sequence>
+          <xsd:element name="Name" type="kdf:ConfigurableAttributesView_Name" minOccurs="1" maxOccurs="1" nillable="false" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EMailContract">
+        <xsd:complexContent>
+          <xsd:extension base="tns:KontaktwegContract">
+            <xsd:sequence>
+              <xsd:element name="Adresse" type="kdf:EMail_Adresse" minOccurs="1" maxOccurs="1" nillable="false" />
+              <xsd:element name="OptInKennzeichen" type="tns:OptInKennzeichenContract" minOccurs="1" maxOccurs="1" nillable="false" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="GirokontoContract">
+        <xsd:complexContent>
+          <xsd:extension base="tns:KontaktwegContract">
+            <xsd:sequence>
+              <xsd:element name="IBAN" type="kdf:Girokonto_IBAN" minOccurs="1" maxOccurs="1" nillable="false" />
+              <xsd:element name="KreditinstitutId" type="kdf:Kreditinstitut_Id_Neu" minOccurs="1" maxOccurs="1" nillable="false" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="IdempotentOperationPendingFaultContract">
+        <xsd:sequence>
+          <xsd:element name="IdempotencyKey" type="kdf:IdempotentOperationPendingFault_IdempotencyKey" minOccurs="1" maxOccurs="1" nillable="false" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="KontaktwegContract">
+        <xsd:sequence>
+          <xsd:element name="Bemerkung" type="kdf:Kontaktweg_Bemerkung" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="Id" type="kdf:Kontaktweg_Id" minOccurs="1" maxOccurs="1" nillable="false" />
+          <xsd:element name="NachfolgerId" type="kdf:Kontaktweg_NachfolgerId" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="Nutzung" type="tns:KontaktwegNutzungContract" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="ValidFrom" type="kdf:Kontaktweg_ValidFrom" minOccurs="1" maxOccurs="1" nillable="false" />
+          <xsd:element name="ValidTo" type="kdf:Kontaktweg_ValidTo" minOccurs="0" maxOccurs="1" nillable="true" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="KontaktwegValidationMessageContract">
+        <xsd:sequence>
+          <xsd:element name="KontaktwegTyp" type="tns:KontaktwegTypContract" minOccurs="1" maxOccurs="1" nillable="false" />
+          <xsd:element name="KontakwegId" type="kdf:Kontaktweg_Id" minOccurs="1" maxOccurs="1" nillable="false" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="OptInKennzeichenContract">
+        <xsd:sequence>
+          <xsd:element name="GueltigAb" type="kdf:OptInKennzeichen_GueltigAb" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="OptIn" type="kdf:OptInKennzeichen_OptIn" minOccurs="1" maxOccurs="1" nillable="false" />
+          <xsd:element name="UserFullName" type="kdf:OptInKennzeichen_UserFullName" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="UserId" type="kdf:OptInKennzeichen_UserId" minOccurs="0" maxOccurs="1" nillable="true" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="PersonAdvancedCriteriaContract">
+        <xsd:complexContent>
+          <xsd:extension base="tns:PersonCriteriaContract">
+            <xsd:sequence>
+              <xsd:element name="EMailadresse" type="kdf:EMail_Adresse" minOccurs="0" maxOccurs="1" nillable="true" />
+              <xsd:element name="Geburtsdatum" type="kdf:PersonIdentitaet_Geburtsdatum" minOccurs="0" maxOccurs="1" nillable="true" />
+              <xsd:element name="Geburtsname" type="kdf:PersonIdentitaet_Geburtsname" minOccurs="0" maxOccurs="1" nillable="true" />
+              <xsd:element name="Hausnummer" type="kdf:Anschrift_Hausnummer" minOccurs="0" maxOccurs="1" nillable="true" />
+              <xsd:element name="IBAN" type="kdf:Girokonto_IBAN" minOccurs="0" maxOccurs="1" nillable="true" />
+              <xsd:element name="Name" type="kdf:PersonIdentitaet_Name" minOccurs="0" maxOccurs="1" nillable="true" />
+              <xsd:element name="Name2" type="kdf:PersonIdentitaet_Name2" minOccurs="0" maxOccurs="1" nillable="true" />
+              <xsd:element name="Ort" type="kdf:Anschrift_Ort" minOccurs="0" maxOccurs="1" nillable="true" />
+              <xsd:element name="Postleitzahl" type="kdf:Anschrift_Postleitzahl" minOccurs="0" maxOccurs="1" nillable="true" />
+              <xsd:element name="Rufnummer" type="kdf:Rufnummer_Nummer" minOccurs="0" maxOccurs="1" nillable="true" />
+              <xsd:element name="Strasse" type="kdf:Anschrift_Strasse" minOccurs="0" maxOccurs="1" nillable="true" />
+              <xsd:element name="Vorname" type="kdf:PersonIdentitaet_Vorname" minOccurs="0" maxOccurs="1" nillable="true" />
+              <xsd:element name="Zusatz1" type="kdf:PersonIdentitaet_Zusatz1" minOccurs="0" maxOccurs="1" nillable="true" />
+              <xsd:element name="Zusatz2" type="kdf:PersonIdentitaet_Zusatz2" minOccurs="0" maxOccurs="1" nillable="true" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="PersonByIdsCriteriaContract">
+        <xsd:complexContent>
+          <xsd:extension base="tns:PersonCriteriaContract">
+            <xsd:sequence>
+              <xsd:element name="Ids" type="tns:ArrayOfId" minOccurs="1" maxOccurs="1" nillable="true" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="PersonByKontaktwegIdsCriteriaContract">
+        <xsd:complexContent>
+          <xsd:extension base="tns:PersonCriteriaContract">
+            <xsd:sequence>
+              <xsd:element name="Ids" type="tns:ArrayOfId" minOccurs="1" maxOccurs="1" nillable="true" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="PersonByPINsCriteriaContract">
+        <xsd:complexContent>
+          <xsd:extension base="tns:PersonCriteriaContract">
+            <xsd:sequence>
+              <xsd:element name="PINs" type="tns:ArrayOfPIN" minOccurs="0" maxOccurs="1" nillable="true" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="PersonContract">
+        <xsd:sequence>
+          <xsd:element name="DsgvoZustand" type="tns:DsgvoZustandContract" minOccurs="1" maxOccurs="1" nillable="false" />
+          <xsd:element name="ExternalKey" type="kdf:Person_ExternalKey" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="Id" type="kdf:Person_Id" minOccurs="1" maxOccurs="1" nillable="false" />
+          <xsd:element name="Kontaktwege" type="tns:ArrayOfKontaktwegContract" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="PersonIdentitaeten" type="tns:ArrayOfPersonIdentitaetContract" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="PIN" type="kdf:Person_PIN" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="SerializedConfigurableAttributesValues" type="tns:SerializedConfigurableAttributesValuesContract" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="Version" type="xsd:int" minOccurs="1" maxOccurs="1" nillable="false" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="PersonCriteriaContract">
+        <xsd:sequence />
+      </xsd:complexType>
+      <xsd:complexType name="PersonIdentitaetContract">
+        <xsd:sequence>
+          <xsd:element name="AnredeId" type="kdf:Anrede_Id" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="Geburtsdatum" type="kdf:PersonIdentitaet_Geburtsdatum" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="Geburtsname" type="kdf:PersonIdentitaet_Geburtsname" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="Id" type="kdf:PersonIdentitaet_Id" minOccurs="1" maxOccurs="1" nillable="false" />
+          <xsd:element name="LeitwegId" type="kdf:PersonIdentitaet_LeitwegId" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="Name" type="kdf:PersonIdentitaet_Name" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="Name2" type="kdf:PersonIdentitaet_Name2" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="Rechtsrolle" type="tns:RechtsrolleContract" minOccurs="1" maxOccurs="1" nillable="false" />
+          <xsd:element name="Steuernummer" type="kdf:PersonIdentitaet_Steuernummer" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="TitelId" type="kdf:Titel_Id" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="UmsatzssteuerId" type="kdf:PersonIdentitaet_UmsatzsteuerId" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="ValidFrom" type="kdf:PersonIdentitaet_ValidFrom" minOccurs="1" maxOccurs="1" nillable="false" />
+          <xsd:element name="Vorname" type="kdf:PersonIdentitaet_Vorname" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="Zusatz1" type="kdf:PersonIdentitaet_Zusatz1" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="Zusatz2" type="kdf:PersonIdentitaet_Zusatz2" minOccurs="0" maxOccurs="1" nillable="true" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="PersonIdentitaetValidationMessageContract">
+        <xsd:sequence>
+          <xsd:element name="PersonIdentitaetId" type="kdf:PersonIdentitaet_Id" minOccurs="1" maxOccurs="1" nillable="false" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="PersonOneFieldCriteriaContract">
+        <xsd:complexContent>
+          <xsd:extension base="tns:PersonCriteriaContract">
+            <xsd:sequence>
+              <xsd:element name="SearchValue" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="PersonSimpleCriteriaContract">
+        <xsd:complexContent>
+          <xsd:extension base="tns:PersonCriteriaContract">
+            <xsd:sequence>
+              <xsd:element name="PIN" type="kdf:Person_PIN" minOccurs="0" maxOccurs="1" nillable="true" />
+              <xsd:element name="SearchValue" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="PersonValidationMessageContract">
+        <xsd:sequence>
+          <xsd:element name="KontaktwegValidationMessage" type="tns:KontaktwegValidationMessageContract" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="PersonId" type="kdf:Person_Id" minOccurs="1" maxOccurs="1" nillable="false" />
+          <xsd:element name="PersonIdentitaetValidationMessage" type="tns:PersonIdentitaetValidationMessageContract" minOccurs="0" maxOccurs="1" nillable="true" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="QueryRequest">
+        <xsd:sequence>
+          <xsd:element name="ConfigurableAttributesContainer" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="ConfigurableAttributesView" type="tns:ConfigurableAttributesViewContract" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="Criteria" type="tns:PersonCriteriaContract" minOccurs="1" maxOccurs="1" nillable="true" />
+          <xsd:element name="Details" type="tns:ArrayOfPersonDetailContract" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="MaxResults" type="xsd:int" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="RequestId" type="ser:guid" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="SearchMode" type="tns:SearchModeContract" minOccurs="1" maxOccurs="1" nillable="false" />
+          <xsd:element name="SerializedConfigurableAttributesValues" type="tns:SerializedConfigurableAttributesValuesContract" minOccurs="0" maxOccurs="1" nillable="true" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="QueryResponse">
+        <xsd:sequence>
+          <xsd:element name="ConfigurableAttributesContainer" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="KontaktwegChronologySettings" type="tns:ChronologySettingsContract" minOccurs="1" maxOccurs="1" nillable="true" />
+          <xsd:element name="Personen" type="tns:ArrayOfPersonContract" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="PersonIdentitaetChronologySettings" type="tns:ChronologySettingsContract" minOccurs="1" maxOccurs="1" nillable="true" />
+          <xsd:element name="RequestId" type="ser:guid" minOccurs="0" maxOccurs="1" nillable="true" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RufnummerContract">
+        <xsd:complexContent>
+          <xsd:extension base="tns:KontaktwegContract">
+            <xsd:sequence>
+              <xsd:element name="Art" type="tns:RufnummernArtContract" minOccurs="1" maxOccurs="1" nillable="false" />
+              <xsd:element name="Nummer" type="kdf:Rufnummer_Nummer" minOccurs="1" maxOccurs="1" nillable="false" />
+              <xsd:element name="OptInKennzeichen" type="tns:OptInKennzeichenContract" minOccurs="1" maxOccurs="1" nillable="false" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="SaveChangesRequest">
+        <xsd:sequence>
+          <xsd:element name="ConfigurableAttributesContainer" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="Personen" type="tns:ArrayOfPersonContract" minOccurs="1" maxOccurs="1" nillable="true" />
+          <xsd:element name="RequestId" type="ser:guid" minOccurs="0" maxOccurs="1" nillable="true" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="SaveChangesResponse">
+        <xsd:sequence>
+          <xsd:element name="Personen" type="tns:ArrayOfPersonContract" minOccurs="1" maxOccurs="1" nillable="true" />
+          <xsd:element name="RequestId" type="ser:guid" minOccurs="0" maxOccurs="1" nillable="true" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="SerializedConfigurableAttributesValuesContract">
+        <xsd:sequence>
+          <xsd:element name="SerializedJSON" type="kdf:SerializedConfigurableAttributesValues_SerializedJSON" minOccurs="0" maxOccurs="1" nillable="true" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="StaleDataFaultContract">
+        <xsd:sequence>
+          <xsd:element name="Id" type="tns:ArrayOfId" minOccurs="0" maxOccurs="1" nillable="true" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="UnhandledFaultContract">
+        <xsd:sequence>
+          <xsd:element name="Id" type="kdf:UnhandledFault_Id" minOccurs="0" maxOccurs="1" nillable="true" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ValidateRequest">
+        <xsd:sequence>
+          <xsd:element name="Personen" type="tns:ArrayOfPersonContract" minOccurs="1" maxOccurs="1" nillable="true" />
+          <xsd:element name="RequestId" type="ser:guid" minOccurs="0" maxOccurs="1" nillable="true" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ValidateResponse">
+        <xsd:sequence>
+          <xsd:element name="RequestId" type="ser:guid" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="ValidationResultListe" type="tns:ArrayOfValidationResultContract" minOccurs="1" maxOccurs="1" nillable="true" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ValidationFaultContract">
+        <xsd:sequence>
+          <xsd:element name="ValidationResultListe" type="tns:ArrayOfValidationResultContract" minOccurs="1" maxOccurs="1" nillable="true" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ValidationMessageContract">
+        <xsd:sequence>
+          <xsd:element name="PersonValidationMessage" type="tns:PersonValidationMessageContract" minOccurs="0" maxOccurs="1" nillable="true" />
+          <xsd:element name="Text" type="kdf:ValidationMessage_Text" minOccurs="1" maxOccurs="1" nillable="false" />
+          <xsd:element name="ValidationMessageLevel" type="tns:ValidationMessageLevelContract" minOccurs="1" maxOccurs="1" nillable="false" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ValidationResultContract">
+        <xsd:sequence>
+          <xsd:element name="PersonId" type="kdf:Person_Id" minOccurs="1" maxOccurs="1" nillable="false" />
+          <xsd:element name="ValidationMessageListe" type="tns:ArrayOfValidationMessageContract" minOccurs="0" maxOccurs="1" nillable="true" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="AnschriftContract" type="tns:AnschriftContract" />
+      <xsd:element name="ArrayOfId" type="tns:ArrayOfId" />
+      <xsd:element name="ArrayOfKontaktwegContract" type="tns:ArrayOfKontaktwegContract" />
+      <xsd:element name="ArrayOfPersonContract" type="tns:ArrayOfPersonContract" />
+      <xsd:element name="ArrayOfPersonDetailContract" type="tns:ArrayOfPersonDetailContract" />
+      <xsd:element name="ArrayOfPersonIdentitaetContract" type="tns:ArrayOfPersonIdentitaetContract" />
+      <xsd:element name="ArrayOfPIN" type="tns:ArrayOfPIN" />
+      <xsd:element name="ArrayOfValidationMessageContract" type="tns:ArrayOfValidationMessageContract" />
+      <xsd:element name="ArrayOfValidationResultContract" type="tns:ArrayOfValidationResultContract" />
+      <xsd:element name="ChronologySettingsContract" type="tns:ChronologySettingsContract" />
+      <xsd:element name="ConfigurableAttributesViewContract" type="tns:ConfigurableAttributesViewContract" />
+      <xsd:element name="EMailContract" type="tns:EMailContract" />
+      <xsd:element name="GirokontoContract" type="tns:GirokontoContract" />
+      <xsd:element name="IdempotentOperationPendingFaultContract" type="tns:IdempotentOperationPendingFaultContract" />
+      <xsd:element name="KontaktwegContract" type="tns:KontaktwegContract" />
+      <xsd:element name="KontaktwegValidationMessageContract" type="tns:KontaktwegValidationMessageContract" />
+      <xsd:element name="OptInKennzeichenContract" type="tns:OptInKennzeichenContract" />
+      <xsd:element name="PersonAdvancedCriteriaContract" type="tns:PersonAdvancedCriteriaContract" />
+      <xsd:element name="PersonByIdsCriteriaContract" type="tns:PersonByIdsCriteriaContract" />
+      <xsd:element name="PersonByKontaktwegIdsCriteriaContract" type="tns:PersonByKontaktwegIdsCriteriaContract" />
+      <xsd:element name="PersonByPINsCriteriaContract" type="tns:PersonByPINsCriteriaContract" />
+      <xsd:element name="PersonContract" type="tns:PersonContract" />
+      <xsd:element name="PersonCriteriaContract" type="tns:PersonCriteriaContract" />
+      <xsd:element name="PersonIdentitaetContract" type="tns:PersonIdentitaetContract" />
+      <xsd:element name="PersonIdentitaetValidationMessageContract" type="tns:PersonIdentitaetValidationMessageContract" />
+      <xsd:element name="PersonOneFieldCriteriaContract" type="tns:PersonOneFieldCriteriaContract" />
+      <xsd:element name="PersonSimpleCriteriaContract" type="tns:PersonSimpleCriteriaContract" />
+      <xsd:element name="PersonValidationMessageContract" type="tns:PersonValidationMessageContract" />
+      <xsd:element name="QueryRequest" type="tns:QueryRequest" />
+      <xsd:element name="QueryResponse" type="tns:QueryResponse" />
+      <xsd:element name="RufnummerContract" type="tns:RufnummerContract" />
+      <xsd:element name="SaveChangesRequest" type="tns:SaveChangesRequest" />
+      <xsd:element name="SaveChangesResponse" type="tns:SaveChangesResponse" />
+      <xsd:element name="SerializedConfigurableAttributesValuesContract" type="tns:SerializedConfigurableAttributesValuesContract" />
+      <xsd:element name="StaleDataFaultContract" type="tns:StaleDataFaultContract" />
+      <xsd:element name="UnhandledFaultContract" type="tns:UnhandledFaultContract" />
+      <xsd:element name="ValidateRequest" type="tns:ValidateRequest" />
+      <xsd:element name="ValidateResponse" type="tns:ValidateResponse" />
+      <xsd:element name="ValidationFaultContract" type="tns:ValidationFaultContract" />
+      <xsd:element name="ValidationMessageContract" type="tns:ValidationMessageContract" />
+      <xsd:element name="ValidationResultContract" type="tns:ValidationResultContract" />
+    </xsd:schema>
+    <xsd:schema targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/">
+      <xsd:simpleType name="guid">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:schema>
+    <xsd:schema version="3.1.0.0" targetNamespace="urn://Schleupen.CS.kdf_3.1">
+      <xsd:simpleType name="Anrede_Id">
+        <xsd:restriction base="ser:guid" />
+      </xsd:simpleType>
+      <xsd:simpleType name="Anschrift_Hausnummer">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="Anschrift_Ort">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="Anschrift_Ortsteil">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="Anschrift_Postfach">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="Anschrift_Postleitzahl">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="Anschrift_Strasse">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="ChronologyGranularity_Day">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Day" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ChronologyGranularity_Hour">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Hour" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ChronologyGranularity_Minute">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Minute" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ChronologyGranularity_Month">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Month" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ChronologyGranularity_None">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="None" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ChronologyGranularity_Second">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Second" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ChronologyGranularity_Year">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Year" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ChronologyIntervalType_Closed">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Closed" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ChronologyIntervalType_RightOpen">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="RightOpen" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ChronologyKind_Collection">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Collection" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ChronologyKind_Ray">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Ray" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ChronologyKind_Set">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Set" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ConfigurableAttributesView_Name">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="DsgvoZustand_Anonymisiert">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Anonymisiert" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="DsgvoZustand_Depseudonymisiert">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Depseudonymisiert" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="DsgvoZustand_NichtPseudonymisiert">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="NichtPseudonymisiert" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="DsgvoZustand_Pseudonymisiert">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Pseudonymisiert" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="EMail_Adresse">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="Girokonto_IBAN">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="IdempotentOperationPendingFault_IdempotencyKey">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="Kontaktweg_Bemerkung">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="Kontaktweg_Id">
+        <xsd:restriction base="ser:guid" />
+      </xsd:simpleType>
+      <xsd:simpleType name="Kontaktweg_NachfolgerId">
+        <xsd:restriction base="ser:guid" />
+      </xsd:simpleType>
+      <xsd:simpleType name="Kontaktweg_ValidFrom">
+        <xsd:restriction base="xsd:dateTime" />
+      </xsd:simpleType>
+      <xsd:simpleType name="Kontaktweg_ValidTo">
+        <xsd:restriction base="xsd:dateTime" />
+      </xsd:simpleType>
+      <xsd:simpleType name="KontaktwegNutzung_Geschaeftlich">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Geschaeftlich" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="KontaktwegNutzung_Privat">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Privat" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="KontaktwegTyp_Anschrift">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Anschrift" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="KontaktwegTyp_EMail">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="EMail" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="KontaktwegTyp_Girokonto">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Girokonto" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="KontaktwegTyp_Rufnummer">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Rufnummer" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="Kreditinstitut_Id_Neu">
+        <xsd:restriction base="ser:guid" />
+      </xsd:simpleType>
+      <xsd:simpleType name="Land_Id">
+        <xsd:restriction base="ser:guid" />
+      </xsd:simpleType>
+      <xsd:simpleType name="OptInKennzeichen_GueltigAb">
+        <xsd:restriction base="xsd:dateTime" />
+      </xsd:simpleType>
+      <xsd:simpleType name="OptInKennzeichen_OptIn">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="OptInKennzeichen_UserFullName">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="OptInKennzeichen_UserId">
+        <xsd:restriction base="ser:guid" />
+      </xsd:simpleType>
+      <xsd:simpleType name="Person_ExternalKey">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="Person_Id">
+        <xsd:restriction base="ser:guid" />
+      </xsd:simpleType>
+      <xsd:simpleType name="Person_PIN">
+        <xsd:restriction base="xsd:int" />
+      </xsd:simpleType>
+      <xsd:simpleType name="PersonDetail_ConfigurableAttributes">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="ConfigurableAttributes" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="PersonDetail_Girokonten">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Girokonten" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="PersonDetail_Kontaktwege">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Kontaktwege" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="PersonDetail_None">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="None" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="PersonDetail_PersonIdentitaet">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="PersonIdentitaet" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="PersonDetail_PersonIdentitaetAktuell">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="PersonIdentitaetAktuell" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="PersonDetail_PersonIdentitaetAktuellUndZukunft">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="PersonIdentitaetAktuellUndZukunft" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="PersonIdentitaet_Geburtsdatum">
+        <xsd:restriction base="xsd:dateTime" />
+      </xsd:simpleType>
+      <xsd:simpleType name="PersonIdentitaet_Geburtsname">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="PersonIdentitaet_Id">
+        <xsd:restriction base="ser:guid" />
+      </xsd:simpleType>
+      <xsd:simpleType name="PersonIdentitaet_LeitwegId">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="PersonIdentitaet_Name">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="PersonIdentitaet_Name2">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="PersonIdentitaet_Steuernummer">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="PersonIdentitaet_UmsatzsteuerId">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="PersonIdentitaet_ValidFrom">
+        <xsd:restriction base="xsd:dateTime" />
+      </xsd:simpleType>
+      <xsd:simpleType name="PersonIdentitaet_Vorname">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="PersonIdentitaet_Zusatz1">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="PersonIdentitaet_Zusatz2">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="Rechtsrolle_Juristisch">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Juristisch" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="Rechtsrolle_Natuerlich">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Natuerlich" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="Rufnummer_Nummer">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="RufnummernArt_Fax">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Fax" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="RufnummernArt_Festnetz">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Festnetz" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="RufnummernArt_Mobiltelefon">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Mobiltelefon" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="SearchMode_BeginsWith">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="BeginsWith" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="SearchMode_Exact">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Exact" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="SearchMode_Wildcard">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Wildcard" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="SerializedConfigurableAttributesValues_SerializedJSON">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="Titel_Id">
+        <xsd:restriction base="ser:guid" />
+      </xsd:simpleType>
+      <xsd:simpleType name="UnhandledFault_Id">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="ValidationMessage_Text">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="ValidationMessageLevel_Error">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Error" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ValidationMessageLevel_Info">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Info" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ValidationMessageLevel_Warning">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="Warning" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:schema>
+    <xsd:schema targetNamespace="urn://Schleupen.CS.PI.SB.Broker_3.2">
+      <xsd:element name="SessionToken" type="xsd:string" nillable="true" />
+    </xsd:schema>
+    <xsd:schema targetNamespace="urn://Schleupen.CS.PI.SB.Idempotency_3.0">
+      <xsd:element name="IdempotencyKey" type="xsd:string" nillable="true" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IPersonEntityService_Query_IdempotentOperationPendingFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:IdempotentOperationPendingFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="IPersonEntityService_Query_StaleDataFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:StaleDataFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="IPersonEntityService_Query_UnhandledFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:UnhandledFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="IPersonEntityService_SaveChanges_IdempotentOperationPendingFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:IdempotentOperationPendingFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="IPersonEntityService_SaveChanges_StaleDataFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:StaleDataFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="IPersonEntityService_SaveChanges_UnhandledFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:UnhandledFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="IPersonEntityService_SaveChanges_ValidationFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="IPersonEntityService_Validate_IdempotentOperationPendingFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:IdempotentOperationPendingFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="IPersonEntityService_Validate_StaleDataFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:StaleDataFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="IPersonEntityService_Validate_UnhandledFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:UnhandledFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="IPersonEntityService_Validate_ValidationFaultContractFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ValidationFaultContract" />
+  </wsdl:message>
+  <wsdl:message name="QueryNotification_Headers">
+    <wsdl:part name="SessionToken" element="sb:SessionToken" />
+    <wsdl:part name="IdempotencyKey" element="idem:IdempotencyKey" />
+  </wsdl:message>
+  <wsdl:message name="QueryRequest">
+    <wsdl:part name="parameters" element="tns:QueryRequest" />
+  </wsdl:message>
+  <wsdl:message name="QueryRequest_Headers">
+    <wsdl:part name="SessionToken" element="sb:SessionToken" />
+    <wsdl:part name="IdempotencyKey" element="idem:IdempotencyKey" />
+  </wsdl:message>
+  <wsdl:message name="QueryResponse">
+    <wsdl:part name="parameters" element="tns:QueryResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveChangesNotification_Headers">
+    <wsdl:part name="SessionToken" element="sb:SessionToken" />
+    <wsdl:part name="IdempotencyKey" element="idem:IdempotencyKey" />
+  </wsdl:message>
+  <wsdl:message name="SaveChangesRequest">
+    <wsdl:part name="parameters" element="tns:SaveChangesRequest" />
+  </wsdl:message>
+  <wsdl:message name="SaveChangesRequest_Headers">
+    <wsdl:part name="SessionToken" element="sb:SessionToken" />
+    <wsdl:part name="IdempotencyKey" element="idem:IdempotencyKey" />
+  </wsdl:message>
+  <wsdl:message name="SaveChangesResponse">
+    <wsdl:part name="parameters" element="tns:SaveChangesResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidateNotification_Headers">
+    <wsdl:part name="SessionToken" element="sb:SessionToken" />
+    <wsdl:part name="IdempotencyKey" element="idem:IdempotencyKey" />
+  </wsdl:message>
+  <wsdl:message name="ValidateRequest">
+    <wsdl:part name="parameters" element="tns:ValidateRequest" />
+  </wsdl:message>
+  <wsdl:message name="ValidateRequest_Headers">
+    <wsdl:part name="SessionToken" element="sb:SessionToken" />
+    <wsdl:part name="IdempotencyKey" element="idem:IdempotencyKey" />
+  </wsdl:message>
+  <wsdl:message name="ValidateResponse">
+    <wsdl:part name="parameters" element="tns:ValidateResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IPersonEntityService">
+    <wsdl:operation name="Query">
+      <wsdl:input wsaw:Action="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0/Query" name="QueryRequest" message="tns:QueryRequest" />
+      <wsdl:output wsaw:Action="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0/QueryResponse" name="QueryResponse" message="tns:QueryResponse" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0/QueryUnhandledFaultContractFault" name="UnhandledFaultContractFault" message="tns:IPersonEntityService_Query_UnhandledFaultContractFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0/QueryIdempotentOperationPendingFaultContractFault" name="IdempotentOperationPendingFaultContractFault" message="tns:IPersonEntityService_Query_IdempotentOperationPendingFaultContractFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0/QueryStaleDataFaultContractFault" name="StaleDataFaultContractFault" message="tns:IPersonEntityService_Query_StaleDataFaultContractFault_FaultMessage" />
+      <wsdl:documentation><![CDATA[Über diese Methode können Personen gelesen werden.<br /><br />]]></wsdl:documentation>
+    </wsdl:operation>
+    <wsdl:operation name="SaveChanges">
+      <wsdl:input wsaw:Action="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0/SaveChanges" name="SaveChangesRequest" message="tns:SaveChangesRequest" />
+      <wsdl:output wsaw:Action="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0/SaveChangesResponse" name="SaveChangesResponse" message="tns:SaveChangesResponse" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0/SaveChangesValidationFaultContractFault" name="ValidationFaultContractFault" message="tns:IPersonEntityService_SaveChanges_ValidationFaultContractFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0/SaveChangesUnhandledFaultContractFault" name="UnhandledFaultContractFault" message="tns:IPersonEntityService_SaveChanges_UnhandledFaultContractFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0/SaveChangesIdempotentOperationPendingFaultContractFault" name="IdempotentOperationPendingFaultContractFault" message="tns:IPersonEntityService_SaveChanges_IdempotentOperationPendingFaultContractFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0/SaveChangesStaleDataFaultContractFault" name="StaleDataFaultContractFault" message="tns:IPersonEntityService_SaveChanges_StaleDataFaultContractFault_FaultMessage" />
+      <wsdl:documentation><![CDATA[Über diese Methode können Personen angelegt oder Änderungen an Personen gespeichert werden.<br /><br />]]></wsdl:documentation>
+    </wsdl:operation>
+    <wsdl:operation name="Validate">
+      <wsdl:input wsaw:Action="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0/Validate" name="ValidateRequest" message="tns:ValidateRequest" />
+      <wsdl:output wsaw:Action="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0/ValidateResponse" name="ValidateResponse" message="tns:ValidateResponse" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0/ValidateValidationFaultContractFault" name="ValidationFaultContractFault" message="tns:IPersonEntityService_Validate_ValidationFaultContractFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0/ValidateUnhandledFaultContractFault" name="UnhandledFaultContractFault" message="tns:IPersonEntityService_Validate_UnhandledFaultContractFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0/ValidateIdempotentOperationPendingFaultContractFault" name="IdempotentOperationPendingFaultContractFault" message="tns:IPersonEntityService_Validate_IdempotentOperationPendingFaultContractFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0/ValidateStaleDataFaultContractFault" name="StaleDataFaultContractFault" message="tns:IPersonEntityService_Validate_StaleDataFaultContractFault_FaultMessage" />
+      <wsdl:documentation><![CDATA[Über diese Methode kann geprüft werden, ob die zu speichernden Personen konsistent sind.<br /><br />]]></wsdl:documentation>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="http" type="tns:IPersonEntityService">
+    <wsp:PolicyReference URI="#http_policy" />
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Query">
+      <soap:operation soapAction="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0/Query" style="document" />
+      <wsdl:input name="QueryRequest">
+        <soap:body use="literal" />
+        <soap:header message="tns:QueryRequest_Headers" part="SessionToken" use="literal" />
+        <soap:header message="tns:QueryRequest_Headers" part="IdempotencyKey" use="literal" />
+      </wsdl:input>
+      <wsdl:output name="QueryResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="UnhandledFaultContractFault">
+        <soap:fault use="literal" name="UnhandledFaultContractFault" />
+      </wsdl:fault>
+      <wsdl:fault name="IdempotentOperationPendingFaultContractFault">
+        <soap:fault use="literal" name="IdempotentOperationPendingFaultContractFault" />
+      </wsdl:fault>
+      <wsdl:fault name="StaleDataFaultContractFault">
+        <soap:fault use="literal" name="StaleDataFaultContractFault" />
+      </wsdl:fault>
+      <wsdl:documentation><![CDATA[Über diese Methode können Personen gelesen werden.<br /><br />]]></wsdl:documentation>
+    </wsdl:operation>
+    <wsdl:operation name="SaveChanges">
+      <soap:operation soapAction="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0/SaveChanges" style="document" />
+      <wsdl:input name="SaveChangesRequest">
+        <soap:body use="literal" />
+        <soap:header message="tns:SaveChangesRequest_Headers" part="SessionToken" use="literal" />
+        <soap:header message="tns:SaveChangesRequest_Headers" part="IdempotencyKey" use="literal" />
+      </wsdl:input>
+      <wsdl:output name="SaveChangesResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultContractFault">
+        <soap:fault use="literal" name="ValidationFaultContractFault" />
+      </wsdl:fault>
+      <wsdl:fault name="UnhandledFaultContractFault">
+        <soap:fault use="literal" name="UnhandledFaultContractFault" />
+      </wsdl:fault>
+      <wsdl:fault name="IdempotentOperationPendingFaultContractFault">
+        <soap:fault use="literal" name="IdempotentOperationPendingFaultContractFault" />
+      </wsdl:fault>
+      <wsdl:fault name="StaleDataFaultContractFault">
+        <soap:fault use="literal" name="StaleDataFaultContractFault" />
+      </wsdl:fault>
+      <wsdl:documentation><![CDATA[Über diese Methode können Personen angelegt oder Änderungen an Personen gespeichert werden.<br /><br />]]></wsdl:documentation>
+    </wsdl:operation>
+    <wsdl:operation name="Validate">
+      <soap:operation soapAction="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0/Validate" style="document" />
+      <wsdl:input name="ValidateRequest">
+        <soap:body use="literal" />
+        <soap:header message="tns:ValidateRequest_Headers" part="SessionToken" use="literal" />
+        <soap:header message="tns:ValidateRequest_Headers" part="IdempotencyKey" use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ValidateResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultContractFault">
+        <soap:fault use="literal" name="ValidationFaultContractFault" />
+      </wsdl:fault>
+      <wsdl:fault name="UnhandledFaultContractFault">
+        <soap:fault use="literal" name="UnhandledFaultContractFault" />
+      </wsdl:fault>
+      <wsdl:fault name="IdempotentOperationPendingFaultContractFault">
+        <soap:fault use="literal" name="IdempotentOperationPendingFaultContractFault" />
+      </wsdl:fault>
+      <wsdl:fault name="StaleDataFaultContractFault">
+        <soap:fault use="literal" name="StaleDataFaultContractFault" />
+      </wsdl:fault>
+      <wsdl:documentation><![CDATA[Über diese Methode kann geprüft werden, ob die zu speichernden Personen konsistent sind.<br /><br />]]></wsdl:documentation>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="tcp" type="tns:IPersonEntityService">
+    <wsp:PolicyReference URI="#tcp_policy" />
+    <soap12:binding transport="http://schemas.microsoft.com/soap/tcp" />
+    <wsdl:operation name="Query">
+      <soap12:operation soapAction="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0/Query" style="document" />
+      <wsdl:input name="QueryRequest">
+        <soap12:header message="tns:QueryRequest_Headers" part="SessionToken" use="literal" />
+        <soap12:header message="tns:QueryRequest_Headers" part="IdempotencyKey" use="literal" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="QueryResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="UnhandledFaultContractFault">
+        <soap12:fault use="literal" name="UnhandledFaultContractFault" />
+      </wsdl:fault>
+      <wsdl:fault name="IdempotentOperationPendingFaultContractFault">
+        <soap12:fault use="literal" name="IdempotentOperationPendingFaultContractFault" />
+      </wsdl:fault>
+      <wsdl:fault name="StaleDataFaultContractFault">
+        <soap12:fault use="literal" name="StaleDataFaultContractFault" />
+      </wsdl:fault>
+      <wsdl:documentation><![CDATA[Über diese Methode können Personen gelesen werden.<br /><br />]]></wsdl:documentation>
+    </wsdl:operation>
+    <wsdl:operation name="SaveChanges">
+      <soap12:operation soapAction="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0/SaveChanges" style="document" />
+      <wsdl:input name="SaveChangesRequest">
+        <soap12:header message="tns:SaveChangesRequest_Headers" part="SessionToken" use="literal" />
+        <soap12:header message="tns:SaveChangesRequest_Headers" part="IdempotencyKey" use="literal" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="SaveChangesResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultContractFault">
+        <soap12:fault use="literal" name="ValidationFaultContractFault" />
+      </wsdl:fault>
+      <wsdl:fault name="UnhandledFaultContractFault">
+        <soap12:fault use="literal" name="UnhandledFaultContractFault" />
+      </wsdl:fault>
+      <wsdl:fault name="IdempotentOperationPendingFaultContractFault">
+        <soap12:fault use="literal" name="IdempotentOperationPendingFaultContractFault" />
+      </wsdl:fault>
+      <wsdl:fault name="StaleDataFaultContractFault">
+        <soap12:fault use="literal" name="StaleDataFaultContractFault" />
+      </wsdl:fault>
+      <wsdl:documentation><![CDATA[Über diese Methode können Personen angelegt oder Änderungen an Personen gespeichert werden.<br /><br />]]></wsdl:documentation>
+    </wsdl:operation>
+    <wsdl:operation name="Validate">
+      <soap12:operation soapAction="urn://Schleupen.CS.AP.ZD.Personen.PersonEntityService_3.0/Validate" style="document" />
+      <wsdl:input name="ValidateRequest">
+        <soap12:header message="tns:ValidateRequest_Headers" part="SessionToken" use="literal" />
+        <soap12:header message="tns:ValidateRequest_Headers" part="IdempotencyKey" use="literal" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ValidateResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultContractFault">
+        <soap12:fault use="literal" name="ValidationFaultContractFault" />
+      </wsdl:fault>
+      <wsdl:fault name="UnhandledFaultContractFault">
+        <soap12:fault use="literal" name="UnhandledFaultContractFault" />
+      </wsdl:fault>
+      <wsdl:fault name="IdempotentOperationPendingFaultContractFault">
+        <soap12:fault use="literal" name="IdempotentOperationPendingFaultContractFault" />
+      </wsdl:fault>
+      <wsdl:fault name="StaleDataFaultContractFault">
+        <soap12:fault use="literal" name="StaleDataFaultContractFault" />
+      </wsdl:fault>
+      <wsdl:documentation><![CDATA[Über diese Methode kann geprüft werden, ob die zu speichernden Personen konsistent sind.<br /><br />]]></wsdl:documentation>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="IPersonEntityService">
+    <wsdl:documentation><![CDATA[Dieser EntityService dient der Verwaltung von Personen samt Identitäten. Diese können<br /><ul><li>gelesen (Query) </li><li>gespeichert (SaveChanges)</li><li>neu angelegt (SaveChanges)</li><li>validiert (Validate)</li></ul>werden.<br /><br />Das Valdieren kann gemäß früher Validierung ausgeführt werden, ohne die Entitäten zu persistieren. Die Valdierung erfolgt auch durch SaveChanges. <br /><br />Das Abfragen ermöglicht das Lesen der unterschiedlichen historischen Stände (z.B. aktuell)]]></wsdl:documentation>
+  </wsdl:service>
+</wsdl:definitions>
