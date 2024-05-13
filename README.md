@@ -1,6 +1,6 @@
 # Beispiele zum Aufruf von Services in Schleupen.CS
 
-Beispiel ist im Developer Campus beschrieben unter: https://developer-campus.de/tracks/integration/webservices-nutzen/
+Beispiel ist im [Developer Campus beschrieben: Webservices nutzen](https://developer-campus.de/tracks/integration/webservices-nutzen/)
 
 ## CallCSServiceFromDotNet4
 Vorraussetzung ist ein aktuelles .NET SDK und .NET Framework 4.8
